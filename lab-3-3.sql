@@ -16,3 +16,22 @@
 -- | 2004 | St. Louis Cardinals           | 105       |
 
 
+SELECT
+    year,
+    name,
+    wins
+FROM (
+    SELECT
+        year,
+        name,
+        wins,
+        ROW_NUMBER() OVER (
+            PARTITION BY year
+            ORDER BY wins DESC
+        ) AS rn
+    FROM teams
+    WHERE year >= 1960
+) t
+WHERE rn = 1
+ORDER BY wins DESC;
+
